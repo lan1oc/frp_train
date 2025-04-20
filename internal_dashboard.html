@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internal Network Access Portal</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            color: #0056b3;
+            border-bottom: 2px solid #0056b3;
+            padding-bottom: 10px;
+            margin-top: 20px;
+        }
+        .service-list {
+            list-style: none;
+            padding: 0;
+        }
+        .service-list li {
+            background: #e9e9e9;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 5px solid #007bff;
+        }
+        .service-list li strong {
+            color: #0056b3;
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.9em;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the Internal Network Access Portal</h1>
+        <p>This machine serves as an internal application host and access point for authorized personnel.</p>
+
+        <h2>System Status Overview (Simulated)</h2>
+        <p>Status: <strong style="color: green;">Operational</strong></p>
+        <p>Last Update: 2025-04-19 18:00:00 CST</p>
+        <p>Current Load: Normal</p>
+
+        <h2>Accessible Internal Services (Via this host or connected systems)</h2>
+        <ul class="service-list">
+            <li>
+                <strong>Internal Web Application:</strong> <a href="http://172.20.0.10:80/">http://172.20.0.10/</a> (This server)
+                <br>Includes sample pages like <a href="http://172.20.0.10:80/phpinfo.php">PHP Info</a> (if enabled/configured).
+            </li>
+            <li>
+                <strong>SSH Access:</strong> Available via Port 22 (Command Line Access)
+            </li>
+            <li>
+                <strong>Internal Cache:</strong> Redis Service available on Port 6379
+            </li>
+            <li>
+                <strong>Database Server:</strong> <a href="http://172.20.0.20:3306/">Database Server</a> (Simulated Link)
+                <br>MySQL Service available on 172.20.0.20:3306
+            </li>
+             <li>
+                <strong>Compromised Web Entry:</strong> <a href="http://172.20.0.3:80/">Compromised Web Server</a> (Simulated Link)
+                <br>Original entry point, should be patched.
+            </li>
+        </ul>
+
+        <p>Access to services listed above may require proper authentication or further internal network navigation.</p>
+    </div>
+
+    <footer>
+        &copy; 2025 Internal IT Department. All rights reserved.
+    </footer>
+</body>
+</html>

@@ -1,0 +1,14 @@
+FROM ubuntu:latest
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt update && apt install -y nginx php-fpm php-cli curl iproute2 net-tools openssh-server iputils-ping && \
+    rm -rf /var/lib/apt/lists/*
+RUN mkdir -p /var/www/html/uploads && chown -R www-data:www-data /var/www/html
+RUN which ping || (echo "错误：ping 命令未找到，安装失败！" && exit 1)
+COPY nginx_vhost_compromised.conf /etc/nginx/sites-available/default
+RUN rm /etc/nginx/sites-enabled/default && ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
+COPY upload.html /var/www/html/
+COPY upload.php /var/www/html/
+EXPOSE 80
+EXPOSE 22
+RUN useradd -m webadmin && echo "webadmin:securepassword" | chpasswd
+CMD service nginx start && service php$(php -r 'echo PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION;')-fpm start && service ssh start && tail -f /dev/null

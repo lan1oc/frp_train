@@ -1,0 +1,57 @@
+version: '3.8'
+
+networks:
+  internal_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
+
+services:
+  # 模拟 "出网的机器" / 入口 Web 服务器 (Compromised)
+  # IP: 172.20.0.3 (内部), 映射端口到 192.168.28.143:8000 (外部)
+  compromised:
+    container_name: compromised_vm
+    build:
+      context: . # 指定 Dockerfile 所在的构建上下文目录 (当前目录)
+      dockerfile: Dockerfile.compromised # 指定 Dockerfile 文件名
+    networks:
+      internal_net:
+        ipv4_address: 172.20.0.3
+      # 连接到 Docker 默认网络，以便访问 192.168.28.142
+    ports:
+      - "8000:80" # 映射容器 Web 端口到宿主机 8000
+      - "2200:22" # 映射容器 SSH 端口到宿主机 2200 (模拟管理入口)
+    restart: unless-stopped
+
+  # 模拟 "内网应用服务器/堡垒机" (Target 1)
+  # IP: 172.20.0.10 (内部)
+  internal_target_1:
+    container_name: internal_target_1_vm
+    build:
+      context: . # 指定 Dockerfile 所在的构建上下文目录 (当前目录)
+      dockerfile: Dockerfile.target1 # 指定 Dockerfile 文件名
+    networks:
+      internal_net:
+        ipv4_address: 172.20.0.10
+    restart: unless-stopped
+
+  # 模拟 "内网数据库服务器" (Target 2)
+  # IP: 172.20.0.20 (内部)
+  internal_target_2:
+    container_name: internal_target_2_vm
+    image: mysql:latest # 使用官方 MySQL 镜像
+    environment:
+      MYSQL_ROOT_PASSWORD: supersecurepassword # Root 密码
+      MYSQL_DATABASE: webapp_db             # 创建一个数据库
+      MYSQL_USER: webapp                    # 创建一个用户
+      MYSQL_PASSWORD: password123           # 用户密码
+    networks:
+      internal_net:
+        ipv4_address: 172.20.0.20
+    volumes:
+      - mysql_data:/var/lib/mysql # 数据持久化
+    restart: unless-stopped
+
+volumes:
+  mysql_data: {} # 定义数据卷

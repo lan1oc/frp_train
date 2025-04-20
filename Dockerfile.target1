@@ -1,0 +1,15 @@
+FROM ubuntu:latest
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt update && apt install -y nginx openssh-server redis-server iproute2 net-tools mysql-client iputils-ping php-fpm php-cli && \
+    rm -rf /var/lib/apt/lists/*
+RUN which ping || (echo "错误：ping 命令未找到，安装失败！" && exit 1)
+RUN mkdir -p /var/www/html/uploads && chown -R www-data:www-data /var/www/html
+COPY nginx_vhost_target1.conf /etc/nginx/sites-available/default
+RUN rm /etc/nginx/sites-enabled/default && ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
+COPY internal_dashboard.html /var/www/html/index.html
+COPY target1_phpinfo.php /var/www/html/phpinfo.php
+EXPOSE 80
+EXPOSE 22
+EXPOSE 6379
+RUN useradd -m appuser && echo "appuser:securepassword" | chpasswd
+CMD service nginx start && service php$(php -r 'echo PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION;')-fpm start && service ssh start && service redis-server start && tail -f /dev/null
