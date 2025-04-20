@@ -1,6 +1,6 @@
 # frp_train
 嗯为了初学者练习frp使用的一个简易靶场，拓扑如下：
-![](./image/Pasted image 20250419192845.png)
+![](./image/Pasted%20image%2020250419192845.png)
 ## 详情
 设定以下固定 IP 地址：
 - 内网子网：`172.20.0.0/24`
@@ -13,5 +13,5 @@
 ```
 sudo docker compose up -d --build
 ```
-![](./image/Pasted image 20250420005315.png)
+![](./image/Pasted%20image%2020250420005315.png)
 详情见[此](https://lan1oc.co/2025/04/18/frp/)
